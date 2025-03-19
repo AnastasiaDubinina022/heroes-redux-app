@@ -2,14 +2,14 @@ import {useHttp} from '../../hooks/http.hook';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { heroesFetching, heroesFetched, heroesFetchingError } from '../../actions';
+import { heroesFetching, heroesFetched, heroesFetchingError, deleteHero } from '../../actions';
 import HeroesListItem from "../heroesListItem/HeroesListItem";
 import Spinner from '../spinner/Spinner';
 
 // Задача для этого компонента:
 // При клике на "крестик" идет удаление персонажа из общего состояния
 // Усложненная задача:
-// Удаление идет и с json файла при помощи метода DELETE
+// Удаление идет и с json файла при помощи метода DELETE (доки json server )
 
 const HeroesList = () => {
     const {heroes, heroesLoadingStatus} = useSelector(state => state);
@@ -17,10 +17,10 @@ const HeroesList = () => {
     const {request} = useHttp();
 
     useEffect(() => {
-        dispatch(heroesFetching());
-        request("http://localhost:3001/heroes")
-            .then(data => dispatch(heroesFetched(data)))
-            .catch(() => dispatch(heroesFetchingError()))
+        dispatch(heroesFetching());              // устанавливаем состояние загрузки
+        request("http://localhost:3001/heroes")  // на 3001 порту запускается localhost и делаем запрос к героям
+            .then(data => dispatch(heroesFetched(data)))  // диспэтчим новое действие на статус получено и передаем туда полученные данные
+            .catch(() => dispatch(heroesFetchingError())) // если ошибка меняем статус на ошибкус
 
         // eslint-disable-next-line
     }, []);
@@ -35,9 +35,14 @@ const HeroesList = () => {
         if (arr.length === 0) {
             return <h5 className="text-center mt-5">Героев пока нет</h5>
         }
+        
 
         return arr.map(({id, ...props}) => {
-            return <HeroesListItem key={id} {...props}/>
+            console.log(id)
+            return <HeroesListItem 
+                    key={id} 
+                    deleteHero={() => dispatch(deleteHero(id))}
+                    {...props}/>
         })
     }
 

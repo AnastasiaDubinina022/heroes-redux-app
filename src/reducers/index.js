@@ -1,6 +1,6 @@
 const initialState = {
     heroes: [],
-    heroesLoadingStatus: 'idle',
+    heroesLoadingStatus: 'idle',  // бездействие, ожидание действия 
     filters: []
 }
 
@@ -21,6 +21,11 @@ const reducer = (state = initialState, action) => {
             return {
                 ...state,
                 heroesLoadingStatus: 'error'
+            }
+        case 'DELETE_HERO':
+            return {
+                ...state,
+                heroes: state.heroes.filter(hero => hero.id !== action.payload)
             }
         default: return state
     }
