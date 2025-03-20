@@ -1,4 +1,5 @@
-
+import { useSelector, useDispatch } from "react-redux";
+import {updateFormField, addHero} from '../../actions/index';
 
 // Задача для этого компонента:
 // Реализовать создание нового героя с введенными данными. Он должен попадать
@@ -11,8 +12,26 @@
 // данных из фильтров
 
 const HeroesAddForm = () => {
+
+    const formData = useSelector(state => state.formData);
+    const dispatch = useDispatch();
+
+    const updateFormData = (e) => {
+        const {name, value} = e.target;
+
+        dispatch(updateFormField({name, value}));
+    }
+
+    // console.log(formData.name);
+
+    const onAddHero = (e) => {
+        e.preventDefault();
+        // dispatch()
+       
+    }
+
     return (
-        <form className="border p-4 shadow-lg rounded">
+        <form onSubmit={onAddHero} className="border p-4 shadow-lg rounded">
             <div className="mb-3">
                 <label htmlFor="name" className="form-label fs-4">Имя нового героя</label>
                 <input 
@@ -21,7 +40,9 @@ const HeroesAddForm = () => {
                     name="name" 
                     className="form-control" 
                     id="name" 
-                    placeholder="Как меня зовут?"/>
+                    placeholder="Как меня зовут?"
+                    value={formData.name}
+                    onChange={updateFormData}/>
             </div>
 
             <div className="mb-3">
@@ -32,7 +53,9 @@ const HeroesAddForm = () => {
                     className="form-control" 
                     id="text" 
                     placeholder="Что я умею?"
-                    style={{"height": '130px'}}/>
+                    style={{"height": '130px'}}
+                    value={formData.text}
+                    onChange={updateFormData}/>
             </div>
 
             <div className="mb-3">
@@ -41,7 +64,9 @@ const HeroesAddForm = () => {
                     required
                     className="form-select" 
                     id="element" 
-                    name="element">
+                    name="element"
+                    value={formData.element}
+                    onChange={updateFormData}>
                     <option >Я владею элементом...</option>
                     <option value="fire">Огонь</option>
                     <option value="water">Вода</option>
@@ -50,7 +75,8 @@ const HeroesAddForm = () => {
                 </select>
             </div>
 
-            <button type="submit" className="btn btn-primary">Создать</button>
+            <button 
+            type="submit" className="btn btn-primary">Создать</button>
         </form>
     )
 }

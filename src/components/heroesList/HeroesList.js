@@ -12,7 +12,8 @@ import Spinner from '../spinner/Spinner';
 // Удаление идет и с json файла при помощи метода DELETE (доки json server )
 
 const HeroesList = () => {
-    const {heroes, heroesLoadingStatus} = useSelector(state => state);
+    const heroes = useSelector(state => state.heroes);
+    const heroesLoadingStatus = useSelector(state => state.heroesLoadingStatus);
     const dispatch = useDispatch();
     const {request} = useHttp();
 
@@ -24,6 +25,20 @@ const HeroesList = () => {
 
         // eslint-disable-next-line
     }, []);
+
+    const onDeleteHero = async (id) => {
+        try {
+            const response = await fetch(`http://localhost:3001/heroes/${id}`, {method: 'DELETE'})  // удаляем героя из базы сервера
+
+            if (!response.ok) {
+                throw new Error(`Ошибка при удалении героя: ${response.status}`);
+            }
+
+            dispatch(deleteHero(id));   // передаем dispatch на удаление героя из стейта 
+        } catch (error) {
+            console.error('Ошибка при удалении героя', error)
+        }
+    }
 
     if (heroesLoadingStatus === "loading") {
         return <Spinner/>;
@@ -38,10 +53,9 @@ const HeroesList = () => {
         
 
         return arr.map(({id, ...props}) => {
-            console.log(id)
             return <HeroesListItem 
                     key={id} 
-                    deleteHero={() => dispatch(deleteHero(id))}
+                    deleteHero={() => onDeleteHero(id)}
                     {...props}/>
         })
     }

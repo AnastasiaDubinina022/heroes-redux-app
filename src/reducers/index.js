@@ -1,7 +1,12 @@
 const initialState = {
     heroes: [],
     heroesLoadingStatus: 'idle',  // бездействие, ожидание действия 
-    filters: []
+    filters: [],
+    formData: {
+        // name: '',
+        // text: '', 
+        // element: ''
+    }
 }
 
 const reducer = (state = initialState, action) => {
@@ -26,6 +31,14 @@ const reducer = (state = initialState, action) => {
             return {
                 ...state,
                 heroes: state.heroes.filter(hero => hero.id !== action.payload)
+            }
+        case 'UPDATE_FORM_FIELD':
+            return {
+                ...state,
+                formData: {
+                    ...state.formData,   // Копируем старый объект formData
+                    [action.payload.name]: action.payload.value // Обновляем только одно поле
+                }
             }
         default: return state
     }

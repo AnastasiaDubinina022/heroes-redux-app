@@ -23,3 +23,17 @@ export const deleteHero = (id) => {
         payload: id
     }
 }
+
+export const updateFormField = (name, value) => {
+    return {
+        type: 'UPDATE_FORM_FIELD',
+        payload: {name, value}
+    }
+}
+
+export const addHero = () => {
+    return {
+        type: 'ADD_HERO'
+
+    }
+}
