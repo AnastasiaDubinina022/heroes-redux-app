@@ -24,16 +24,9 @@ export const deleteHero = (id) => {
     }
 }
 
-export const updateFormField = (name, value) => {
+export const addHero = (newHero) => {
     return {
-        type: 'UPDATE_FORM_FIELD',
-        payload: {name, value}
-    }
-}
-
-export const addHero = () => {
-    return {
-        type: 'ADD_HERO'
-
+        type: 'ADD_HERO',
+        payload: newHero
     }
 }

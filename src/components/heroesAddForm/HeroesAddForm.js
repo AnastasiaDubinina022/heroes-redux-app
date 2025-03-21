@@ -1,5 +1,9 @@
-import { useSelector, useDispatch } from "react-redux";
-import {updateFormField, addHero} from '../../actions/index';
+import { useState } from "react";
+import { useDispatch } from "react-redux";
+
+import { useHttp } from "../../hooks/http.hook";
+import { addHero} from '../../actions/index';
+
 
 // Задача для этого компонента:
 // Реализовать создание нового героя с введенными данными. Он должен попадать
@@ -12,26 +16,47 @@ import {updateFormField, addHero} from '../../actions/index';
 // данных из фильтров
 
 const HeroesAddForm = () => {
+    const [formData, setFormData] = useState( {
+        name: '',
+        description: '',
+        element: ''
+      })
 
-    const formData = useSelector(state => state.formData);
     const dispatch = useDispatch();
+    const {request} = useHttp();
 
     const updateFormData = (e) => {
         const {name, value} = e.target;
 
-        dispatch(updateFormField({name, value}));
+        setFormData({
+            ...formData,
+            [name]: value   //  - [] указывают что используем переменную, а не строку name
+        })
     }
 
-    // console.log(formData.name);
-
-    const onAddHero = (e) => {
+    const onSubmitAddHero = async (e) => {
         e.preventDefault();
-        // dispatch()
-       
-    }
+
+        const newHero =  {
+            id: Date.now(),
+            ...formData
+        }
+
+        await request("http://localhost:3001/heroes", 'POST', JSON.stringify(newHero))
+        .then(resp => console.log(resp))
+        .catch(error => console.error(error))
+     
+        dispatch(addHero(newHero));
+
+        setFormData({
+            name: '',
+            description: '',
+            element: ''
+        })
+   }
 
     return (
-        <form onSubmit={onAddHero} className="border p-4 shadow-lg rounded">
+        <form onSubmit={onSubmitAddHero} className="border p-4 shadow-lg rounded">
             <div className="mb-3">
                 <label htmlFor="name" className="form-label fs-4">Имя нового героя</label>
                 <input 
@@ -46,15 +71,15 @@ const HeroesAddForm = () => {
             </div>
 
             <div className="mb-3">
-                <label htmlFor="text" className="form-label fs-4">Описание</label>
+                <label htmlFor="description" className="form-label fs-4">Описание</label>
                 <textarea
                     required
-                    name="text" 
+                    name="description" 
                     className="form-control" 
-                    id="text" 
+                    id="description" 
                     placeholder="Что я умею?"
                     style={{"height": '130px'}}
-                    value={formData.text}
+                    value={formData.description}
                     onChange={updateFormData}/>
             </div>
 
