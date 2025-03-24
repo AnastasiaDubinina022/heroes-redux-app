@@ -23,12 +23,6 @@
       "name": "q",
       "description": "q",
       "element": "fire"
-    },
-    {
-      "id": 1742554591867,
-      "name": "w",
-      "description": "w",
-      "element": "wind"
     }
   ],
   "filters": [

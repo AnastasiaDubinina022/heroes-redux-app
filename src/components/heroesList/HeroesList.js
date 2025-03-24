@@ -27,17 +27,9 @@ const HeroesList = () => {
     }, []);
 
     const onDeleteHero = async (id) => {
-        try {
-            const response = await fetch(`http://localhost:3001/heroes/${id}`, {method: 'DELETE'})  // удаляем героя из базы сервера
-
-            if (!response.ok) {
-                throw new Error(`Ошибка при удалении героя: ${response.status}`);
-            }
-
-            dispatch(deleteHero(id));   // передаем dispatch на удаление героя из стейта 
-        } catch (error) {
-            console.error('Ошибка при удалении героя', error)
-        }
+        await request(`http://localhost:3001/heroes/${id}`, 'DELETE')
+                .then(() => dispatch(deleteHero(id)))   // передаем dispatch на удаление героя из стейта 
+                .catch(error => console.error(error))
     }
 
     if (heroesLoadingStatus === "loading") {
