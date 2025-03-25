@@ -32,10 +32,25 @@
     }
   ],
   "filters": [
-    "all",
-    "fire",
-    "water",
-    "wind",
-    "earth"
+    {
+      "name": "all", 
+      "label": "Все", 
+      "color": "btn-dark"},
+    {
+      "name": "fire", 
+      "label": "Огонь", 
+      "color": "btn-danger"},
+    {
+      "name": "water", 
+      "label": "Вода", 
+      "color": "btn-primary"},
+    {
+      "name": "wind", 
+      "label": "Ветер", 
+      "color": "btn-success"},
+    {
+      "name": "earth", 
+      "label": "Земля", 
+      "color": "btn-secondary"}
   ]
 }

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 
 import { useHttp } from "../../hooks/http.hook";
 import { addHero} from '../../actions/index';
@@ -24,6 +24,7 @@ const HeroesAddForm = () => {
 
     const dispatch = useDispatch();
     const {request} = useHttp();
+    const filters = useSelector(state => state.filters)
 
     const updateFormData = (e) => {
         const {name, value} = e.target;
@@ -54,6 +55,16 @@ const HeroesAddForm = () => {
             element: ''
         })
    }
+
+   console.log(filters)
+
+   const options = filters.map(({name, label}) => {
+
+    if (name === 'all') {
+        return <option key={name}>Я владею элементом...</option>
+    }
+    return <option key={name} value={name}>{label}</option>
+   })
 
     return (
         <form onSubmit={onSubmitAddHero} className="border p-4 shadow-lg rounded">
@@ -92,11 +103,12 @@ const HeroesAddForm = () => {
                     name="element"
                     value={formData.element}
                     onChange={updateFormData}>
-                    <option >Я владею элементом...</option>
+                    {options}
+                    {/* <option >Я владею элементом...</option>
                     <option value="fire">Огонь</option>
                     <option value="water">Вода</option>
                     <option value="wind">Ветер</option>
-                    <option value="earth">Земля</option>
+                    <option value="earth">Земля</option> */}
                 </select>
             </div>
 
