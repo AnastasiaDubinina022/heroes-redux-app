@@ -13,6 +13,7 @@ import Spinner from '../spinner/Spinner';
 
 const HeroesList = () => {
     const heroes = useSelector(state => state.heroes);
+    const activeFilter = useSelector(state => state.activeFilter)
     const heroesLoadingStatus = useSelector(state => state.heroesLoadingStatus);
     const dispatch = useDispatch();
     const {request} = useHttp();
@@ -42,9 +43,18 @@ const HeroesList = () => {
         if (arr.length === 0) {
             return <h5 className="text-center mt-5">Героев пока нет</h5>
         }
+
+        const filteredHeroes = arr.filter((hero) => {
+
+            if (activeFilter === 'all') {
+                return arr;
+            }
+
+            return hero.element === activeFilter;
+        })
         
 
-        return arr.map(({id, ...props}) => {
+        return filteredHeroes.map(({id, ...props}) => {
             return <HeroesListItem 
                     key={id} 
                     deleteHero={() => onDeleteHero(id)}

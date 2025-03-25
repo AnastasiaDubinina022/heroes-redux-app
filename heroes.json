@@ -23,6 +23,12 @@
       "name": "q",
       "description": "q",
       "element": "fire"
+    },
+    {
+      "id": 1742904143424,
+      "name": "e",
+      "description": "e",
+      "element": "earth"
     }
   ],
   "filters": [
