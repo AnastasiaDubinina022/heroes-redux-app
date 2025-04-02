@@ -25,32 +25,37 @@
       "element": "fire"
     },
     {
-      "id": 1742904143424,
-      "name": "e",
-      "description": "e",
+      "id": 1743596345448,
+      "name": "е",
+      "description": "е",
       "element": "earth"
     }
   ],
   "filters": [
     {
-      "name": "all", 
-      "label": "Все", 
-      "color": "btn-dark"},
+      "name": "all",
+      "label": "Все",
+      "color": "btn-dark"
+    },
     {
-      "name": "fire", 
-      "label": "Огонь", 
-      "color": "btn-danger"},
+      "name": "fire",
+      "label": "Огонь",
+      "color": "btn-danger"
+    },
     {
-      "name": "water", 
-      "label": "Вода", 
-      "color": "btn-primary"},
+      "name": "water",
+      "label": "Вода",
+      "color": "btn-primary"
+    },
     {
-      "name": "wind", 
-      "label": "Ветер", 
-      "color": "btn-success"},
+      "name": "wind",
+      "label": "Ветер",
+      "color": "btn-success"
+    },
     {
-      "name": "earth", 
-      "label": "Земля", 
-      "color": "btn-secondary"}
+      "name": "earth",
+      "label": "Земля",
+      "color": "btn-secondary"
+    }
   ]
 }

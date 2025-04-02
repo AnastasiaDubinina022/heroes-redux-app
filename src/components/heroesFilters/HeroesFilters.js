@@ -13,9 +13,9 @@ import Spinner from '../spinner/Spinner';
 // Представьте, что вы попросили бэкенд-разработчика об этом. не забывать перезапускать сервер после изменения json-файла
 
 const HeroesFilters = () => {
-    const filtersLoadingStatus = useSelector(state => state.filtersLoadingStatus);
-    const filters = useSelector(state => state.filters);
-    const activeFilter = useSelector(state => state.activeFilter);
+    const filtersLoadingStatus = useSelector(state => state.filters.filtersLoadingStatus);
+    const filters = useSelector(state => state.filters.filters);
+    const activeFilter = useSelector(state => state.filters.activeFilter);
     const dispatch = useDispatch();
     const {request} = useHttp();
 
@@ -26,37 +26,42 @@ const HeroesFilters = () => {
         .catch(() => dispatch(filtersFetchingError()))
     }, [])
 
-    const onFilterSelect = (name) => {
-        dispatch(setActiveFilter(name))
-    }
-
     if (filtersLoadingStatus === 'loading') {
         return <Spinner/>
     } else if (filtersLoadingStatus === 'error') {
         return <h5 className="text-center mt-5">Ошибка загрузки</h5>
     } 
 
-    const buttons = filters.map(({name, label, color}) => {
-        const active = activeFilter === name;
-        const clazz = active ? 'btn btn-light' : 'btn';
+    const renderFilters = (arr) => {
 
-        return (
-            <button 
-                type='button'
-                className={`${clazz} ${color}`}
-                key={name}
-                onClick={() => onFilterSelect(name)}>
-                {label}
-            </button>
-        )
-    })
+        if (arr.lendgth === 0) {
+            return <h5 className="text-center mt-5">Фильтры не найдены</h5>
+        }
+
+        return arr.map(({name, label, color}) => {
+            const active = activeFilter === name;
+            const clazz = active ? 'btn btn-light' : 'btn';
+    
+            return (
+                <button 
+                    type='button'
+                    className={`${clazz} ${color}`}
+                    key={name}
+                    onClick={() => dispatch(setActiveFilter(name))}>
+                    {label}
+                </button>
+            )
+        })
+    }
+
+    const elements = renderFilters(filters);
 
     return (
         <div className="card shadow-lg mt-4">
             <div className="card-body">
                 <p className="card-text">Отфильтруйте героев по элементам</p>
                 <div className="btn-group">
-                    {buttons}
+                    {elements}
                 </div>
             </div>
         </div>

@@ -24,7 +24,8 @@ const HeroesAddForm = () => {
 
     const dispatch = useDispatch();
     const {request} = useHttp();
-    const filters = useSelector(state => state.filters)
+    const filters = useSelector(state => state.filters.filters)   // в стейте теперь разделение на св-ва filters и heroes, поэтому такое обращение теперь
+    const filtersLoadingStatus = useSelector(state => state.filters.filtersLoadingStatus)
 
     const updateFormData = (e) => {
         const {name, value} = e.target;
@@ -44,27 +45,36 @@ const HeroesAddForm = () => {
         }
 
         await request("http://localhost:3001/heroes", 'POST', JSON.stringify(newHero))
-        .then(resp => console.log(resp))
+        .then(resp => console.log(resp, 'Отправка успешна'))
+        .then(dispatch(addHero(newHero)))    // если отправка на сервер успешна диспатчим героя в стор
         .catch(error => console.error(error))
-     
-        dispatch(addHero(newHero));
 
-        setFormData({
+        setFormData({    // очистка формы после отправки
             name: '',
             description: '',
             element: ''
         })
    }
 
-   console.log(filters)
+   const renderOptions = (filters, status) => {
 
-   const options = filters.map(({name, label}) => {
+        if (status === 'loading') {
+            return <option>Загрузка элементов</option>
+        } else if (status === 'error') {
+            return <option>Ошибка загрузки</option>
+        }
 
-    if (name === 'all') {
-        return <option key={name}>Я владею элементом...</option>
+        if (filters && filters.length > 0) {
+
+            filters.map(({name, label}) => {
+
+                if (name === 'all') {
+                    return <option key={name}>Я владею элементом...</option>
+                }
+                return <option key={name} value={name}>{label}</option>
+            })
+        }  
     }
-    return <option key={name} value={name}>{label}</option>
-   })
 
     return (
         <form onSubmit={onSubmitAddHero} className="border p-4 shadow-lg rounded">
@@ -103,12 +113,7 @@ const HeroesAddForm = () => {
                     name="element"
                     value={formData.element}
                     onChange={updateFormData}>
-                    {options}
-                    {/* <option >Я владею элементом...</option>
-                    <option value="fire">Огонь</option>
-                    <option value="water">Вода</option>
-                    <option value="wind">Ветер</option>
-                    <option value="earth">Земля</option> */}
+                    {renderOptions(filters, filtersLoadingStatus)}
                 </select>
             </div>
 

@@ -1,6 +1,7 @@
 import {useHttp} from '../../hooks/http.hook';
-import { useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+// import { createSelector } from 'reselect';
 
 import { heroesFetching, heroesFetched, heroesFetchingError, deleteHero } from '../../actions';
 import HeroesListItem from "../heroesListItem/HeroesListItem";
@@ -12,11 +13,45 @@ import Spinner from '../spinner/Spinner';
 // Удаление идет и с json файла при помощи метода DELETE (доки json server )
 
 const HeroesList = () => {
-    const heroes = useSelector(state => state.heroes);
-    const activeFilter = useSelector(state => state.activeFilter)
-    const heroesLoadingStatus = useSelector(state => state.heroesLoadingStatus);
+
+    // const filteredHeroes = useSelector(state => {    // можно сразу формировать нужные нам данные на основании глобального стейта
+    //     if (state.filters.activeFilter === 'all') {  // но такой вариант кода не очень приветствуется, т.к. будет срабатываь при любом триггере, даже при повторном нажатии на один и тот же фильтр
+    //         console.log('render')                    // эту проблему решает библиотека reselect (например)
+    //         return state.heroes.heroes;              // !!! или вытаскивать каждое поле из стейта отдельным useSelector
+    //     } else {
+    //         return state.heroes.heroes.filter(item => item.element === state.filters.activeFilter);
+    //     }
+    // })
+
+    // это мемоизрованная функция-селектор которая получает кусочек стэйта (библ reselect)
+    // const filteredHeroesSelector = createSelector(     
+    //     (state) => state.filters.activeFilter,    // мем. значение 1     
+    //     (state) => state.heroes.heroes,           // мем. значение 2 и т.д.
+    //     (filter, heroes) => {                     // (значение 1, значение 2) => {то-то с ними сделать и получить общее мем. значение - filteredHeroesSelector}
+    //         if (filter === 'all') {  
+    //             console.log('render')                  
+    //             return heroes;
+    //         } else {
+    //             return heroes.filter(item => item.element === filter);
+    //         }
+    //     }
+    // )
+    // const filteredHeroes = useSelector(filteredHeroesSelector);  
+
+    const heroes = useSelector(state => state.heroes.heroes);        
+    const activeFilter = useSelector(state => state.filters.activeFilter)
+    const heroesLoadingStatus = useSelector(state => state.heroes.heroesLoadingStatus);
     const dispatch = useDispatch();
     const {request} = useHttp();
+
+    const filteredHeroes = heroes.filter((hero) => {     
+
+        if (activeFilter === 'all') {
+            return heroes;
+        }
+
+        return hero.element === activeFilter;
+    })        
 
     useEffect(() => {
         dispatch(heroesFetching());              // устанавливаем состояние загрузки
@@ -27,11 +62,12 @@ const HeroesList = () => {
         // eslint-disable-next-line
     }, []);
 
-    const onDeleteHero = async (id) => {
-        await request(`http://localhost:3001/heroes/${id}`, 'DELETE')
-                .then(() => dispatch(deleteHero(id)))   // передаем dispatch на удаление героя из стейта 
-                .catch(error => console.error(error))
-    }
+    const onDeleteHero = useCallback((id) => {        // useCallback т.к. передаем метод в дочерний компонент чтобы избежать его лишних перерендеров
+        request(`http://localhost:3001/heroes/${id}`, 'DELETE')
+        .then(data => console.log(data, 'deleted'))   // если запрос прошел успешно (необязательная строка) 
+        .then(() => dispatch(deleteHero(id)))         // передаем dispatch на удаление героя из стейта 
+        .catch(error => console.error(error))
+    }, [request])
 
     if (heroesLoadingStatus === "loading") {
         return <Spinner/>;
@@ -44,17 +80,18 @@ const HeroesList = () => {
             return <h5 className="text-center mt-5">Героев пока нет</h5>
         }
 
-        const filteredHeroes = arr.filter((hero) => {
+        // const filteredHeroes = arr.filter((hero) => {     // мое решение дз с фильтрацией было таким
 
-            if (activeFilter === 'all') {
-                return arr;
-            }
+        //     if (activeFilter === 'all') {
+        //         return arr;
+        //     }
 
-            return hero.element === activeFilter;
-        })
+        //     return hero.element === activeFilter;
+        // })
         
+        // return filteredHeroes.map(({id, ...props}) => {  ...... и т.д.
 
-        return filteredHeroes.map(({id, ...props}) => {
+        return arr.map(({id, ...props}) => {
             return <HeroesListItem 
                     key={id} 
                     deleteHero={() => onDeleteHero(id)}
@@ -62,7 +99,8 @@ const HeroesList = () => {
         })
     }
 
-    const elements = renderHeroesList(heroes);
+    const elements = renderHeroesList(filteredHeroes);
+
     return (
         <ul>
             {elements}
