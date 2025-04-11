@@ -54,7 +54,8 @@ const HeroesList = () => {
     })        
 
     useEffect(() => {
-        dispatch(heroesFetching());              // устанавливаем состояние загрузки
+        // dispatch(heroesFetching());              // устанавливаем состояние загрузки
+        dispatch('FILTERS_FETCHING');    // здесь передаем строку чтобы разобрать работу enhancers
         request("http://localhost:3001/heroes")  // на 3001 порту запускается localhost и делаем запрос к героям
             .then(data => dispatch(heroesFetched(data)))  // диспэтчим новое действие на статус получено и передаем туда полученные данные
             .catch(() => dispatch(heroesFetchingError())) // если ошибка меняем статус на ошибкус
