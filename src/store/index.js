@@ -1,4 +1,5 @@
 import { createStore, combineReducers, compose, applyMiddleware } from 'redux';
+import {thunk} from 'redux-thunk';
 import heroes from '../reducers/heroes';
 import filters from '../reducers/filters';
 
@@ -33,7 +34,7 @@ const enhancer = (createStore) => (...args) => {   // создаем функц�
 const store = createStore(
                     combineReducers({heroes, filters}),    // сокращенная запись {heroes: heroes, filters: filters}
                     compose(
-                        applyMiddleware(stringMiddleware),    // подключаем наш middleware, она принимает в себя аргументами список наших middleware applyMiddleware(...middlewares)
+                        applyMiddleware(thunk, stringMiddleware),    // подключаем наш middleware, она принимает в себя аргументами список наших middlewares: applyMiddleware(...middlewares)
                         window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
                     )
 

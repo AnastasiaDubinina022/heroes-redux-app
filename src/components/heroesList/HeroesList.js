@@ -3,7 +3,7 @@ import { useCallback, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 // import { createSelector } from 'reselect';
 
-import { heroesFetching, heroesFetched, heroesFetchingError, deleteHero } from '../../actions';
+import { fetchHeroes, deleteHero } from '../../actions';
 import HeroesListItem from "../heroesListItem/HeroesListItem";
 import Spinner from '../spinner/Spinner';
 
@@ -54,11 +54,15 @@ const HeroesList = () => {
     })        
 
     useEffect(() => {
-        // dispatch(heroesFetching());              // устанавливаем состояние загрузки
-        dispatch('FILTERS_FETCHING');    // здесь передаем строку чтобы разобрать работу enhancers
-        request("http://localhost:3001/heroes")  // на 3001 порту запускается localhost и делаем запрос к героям
-            .then(data => dispatch(heroesFetched(data)))  // диспэтчим новое действие на статус получено и передаем туда полученные данные
-            .catch(() => dispatch(heroesFetchingError())) // если ошибка меняем статус на ошибкус
+        dispatch(fetchHeroes(request));    // вызываем экшн креатор и передаем туда request
+
+        // все эти действия теперь происходят в экшен креаторе
+        // dispatch(heroesFetching());           // устанавливаем состояние загрузки
+        // dispatch('HEROES_FETCHING');          // здесь передаем строку чтобы разобрать работу enhancers/middleware
+        // dispatch(heroesFetching);                // передаем экшн без вызова просто как функцию, чтобы сработал ReduxThunk 
+        // request("http://localhost:3001/heroes")  // на 3001 порту запускается localhost и делаем запрос к героям
+        //     .then(data => dispatch(heroesFetched(data)))  // диспэтчим новое действие на статус получено и передаем туда полученные данные
+        //     .catch(() => dispatch(heroesFetchingError())) // если ошибка меняем статус на ошибкус
 
         // eslint-disable-next-line
     }, []);
