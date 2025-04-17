@@ -1,3 +1,6 @@
+import { createAction } from "@reduxjs/toolkit";
+
+
 export const fetchHeroes = (request) => (dispatch) => {   // создаем универсальный экшн креатор который будет получать данные и обрабатывать возможные состояния
                                                           // request передаем из компгонента, dispatch передается автоматически из redux-thunk
     dispatch(heroesFetching());                
@@ -6,18 +9,22 @@ export const fetchHeroes = (request) => (dispatch) => {   // создаем ун
         .catch(() => dispatch(heroesFetchingError())) // если ошибка меняем статус на ошибку
 }
 
-export const heroesFetching = () => {
-    return {
-        type: 'HEROES_FETCHING'
-    }
-}
+// export const heroesFetching = () => {
+//     return {
+//         type: 'HEROES_FETCHING'
+//     }
+// }
 
-export const heroesFetched = (heroes) => {
-    return {
-        type: 'HEROES_FETCHED',
-        payload: heroes
-    }
-}
+export const heroesFetching = createAction('HEROES_FETCHING'); // эквивалентно вышеуказанному коду, но более лаконично
+
+// export const heroesFetched = (heroes) => {
+//     return {
+//         type: 'HEROES_FETCHED',
+//         payload: heroes
+//     }
+// }
+
+export const heroesFetched = createAction('HEROES_FETCHED'); // при использовании createAction не нужно указывать payload, он автоматически добавляется из приходящего аргумента в вызов экшена (только 1 аргумент, остальные будут игнорироваться если их передать)
 
 export const heroesFetchingError = () => {
     return {
