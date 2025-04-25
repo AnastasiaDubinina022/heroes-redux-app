@@ -26,25 +26,31 @@ export const heroesFetching = createAction('HEROES_FETCHING'); // эквивал
 
 export const heroesFetched = createAction('HEROES_FETCHED'); // при использовании createAction не нужно указывать payload, он автоматически добавляется из приходящего аргумента в вызов экшена (только 1 аргумент, остальные будут игнорироваться если их передать)
 
-export const heroesFetchingError = () => {
-    return {
-        type: 'HEROES_FETCHING_ERROR'
-    }
-}
+// export const heroesFetchingError = () => {
+//     return {
+//         type: 'HEROES_FETCHING_ERROR'
+//     }
+// }
 
-export const deleteHero = (id) => {
-    return {
-        type: 'DELETE_HERO',
-        payload: id
-    }
-}
+export const heroesFetchingError = createAction('HEROES_FETCHING_ERROR'); 
 
-export const addHero = (newHero) => {
-    return {
-        type: 'ADD_HERO',
-        payload: newHero
-    }
-}
+// export const deleteHero = (id) => {
+//     return {
+//         type: 'DELETE_HERO',
+//         payload: id
+//     }
+// }
+
+export const deleteHero = createAction('DELETE_HERO'); 
+
+// export const addHero = (newHero) => {
+//     return {
+//         type: 'ADD_HERO',
+//         payload: newHero
+//     }
+// }
+
+export const addHero  = createAction('ADD_HERO');  
 
 export const fetchFilters = (request) => (dispatch) => {   // универсчальный экшн креатор для получения данных фильтров (с помощью thunk)
     dispatch(filtersFetching());
@@ -65,6 +71,7 @@ export const filtersFetched = (filters) => {
         payload: filters
     }
 }
+
 export const filtersFetchingError = () => {
     return {
         type: 'FILTERS_FETCHING_ERROR'

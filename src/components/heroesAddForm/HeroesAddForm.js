@@ -66,7 +66,7 @@ const HeroesAddForm = () => {
 
         if (filters && filters.length > 0) {
 
-            filters.map(({name, label}) => {
+            return filters.map(({name, label}) => {
 
                 if (name === 'all') {
                     return <option key={name}>Я владею элементом...</option>
