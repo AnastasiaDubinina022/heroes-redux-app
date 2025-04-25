@@ -1,5 +1,5 @@
-import { createAction } from "@reduxjs/toolkit";
-
+// import { createAction } from "@reduxjs/toolkit";
+import {heroesFetched, heroesFetchingError, heroesFetching} from "../components/heroesList/heroesSlice"; // импортируем экшены из heroesSlice
 
 export const fetchHeroes = (request) => (dispatch) => {   // создаем универсальный экшн креатор который будет получать данные и обрабатывать возможные состояния
                                                           // request передаем из компгонента, dispatch передается автоматически из redux-thunk
@@ -8,49 +8,6 @@ export const fetchHeroes = (request) => (dispatch) => {   // создаем ун
         .then(data => dispatch(heroesFetched(data)))  // диспэтчим новое действие на статус получено и передаем туда полученные данные
         .catch(() => dispatch(heroesFetchingError())) // если ошибка меняем статус на ошибку
 }
-
-// export const heroesFetching = () => {
-//     return {
-//         type: 'HEROES_FETCHING'
-//     }
-// }
-
-export const heroesFetching = createAction('HEROES_FETCHING'); // эквивалентно вышеуказанному коду, но более лаконично
-
-// export const heroesFetched = (heroes) => {
-//     return {
-//         type: 'HEROES_FETCHED',
-//         payload: heroes
-//     }
-// }
-
-export const heroesFetched = createAction('HEROES_FETCHED'); // при использовании createAction не нужно указывать payload, он автоматически добавляется из приходящего аргумента в вызов экшена (только 1 аргумент, остальные будут игнорироваться если их передать)
-
-// export const heroesFetchingError = () => {
-//     return {
-//         type: 'HEROES_FETCHING_ERROR'
-//     }
-// }
-
-export const heroesFetchingError = createAction('HEROES_FETCHING_ERROR'); 
-
-// export const deleteHero = (id) => {
-//     return {
-//         type: 'DELETE_HERO',
-//         payload: id
-//     }
-// }
-
-export const deleteHero = createAction('DELETE_HERO'); 
-
-// export const addHero = (newHero) => {
-//     return {
-//         type: 'ADD_HERO',
-//         payload: newHero
-//     }
-// }
-
-export const addHero  = createAction('ADD_HERO');  
 
 export const fetchFilters = (request) => (dispatch) => {   // универсчальный экшн креатор для получения данных фильтров (с помощью thunk)
     dispatch(filtersFetching());
@@ -84,6 +41,15 @@ export const setActiveFilter = (activeFilter) => {
         payload: activeFilter
     }
 }
+
+// пример создания обычного экшен-креатора (без использования createAction из redux-toolkit)
+// export const heroesFetching = () => {
+//     return {
+//         type: 'HEROES_FETCHING'
+//     }
+// }
+// export const heroesFetching = createAction('HEROES_FETCHING'); // эквивалентно вышеуказанному коду, но более лаконично
+
 
 // пример эфемерной задачи срабатывания фильтров с задержкой
 // export const setActiveFilter = (activeFilter) => (dispatch) => {   // при использоваии redux-thunk можно передавать в экшн функцию, которая автоматически принимает в себя dispatch

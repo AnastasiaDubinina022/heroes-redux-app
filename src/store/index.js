@@ -1,7 +1,8 @@
 // import { createStore, combineReducers, compose, applyMiddleware } from 'redux';
 // import {thunk} from 'redux-thunk';
 import { configureStore } from '@reduxjs/toolkit'; 
-import heroes from '../reducers/heroes';
+// import heroes from '../reducers/heroes';
+import heroes from '../components/heroesList/heroesSlice';  // импортируем редьюсер из heroesSlice
 import filters from '../reducers/filters';
 
 const stringMiddleware = () => (next) => (action) => {   // создаем функцию middleware которая авт. принимает в себя store, возвращает ф-ю авт. подхватывающую dispatch (next) и возвращает конечную ф-ю авт. принимающую в себя action - это по сути и есть наш новый функционал dispatch

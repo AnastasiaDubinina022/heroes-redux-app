@@ -2,7 +2,8 @@ import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 
 import { useHttp } from "../../hooks/http.hook";
-import { addHero} from '../../actions/index';
+// import { addHero} from '../../actions/index';
+import { addHero} from '../heroesList/heroesSlice';   // импортируем экшен из heroesSlice
 
 
 // Задача для этого компонента:
