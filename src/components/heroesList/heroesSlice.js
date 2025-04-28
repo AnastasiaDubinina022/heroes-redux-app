@@ -1,24 +1,25 @@
-import { createSlice } from "@reduxjs/toolkit";
-// import { heroesFetching } from "../../actions";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { useHttp } from "../../hooks/http.hook";   
 
 const initialState = {
     heroes: [],
     heroesLoadingStatus: 'idle'  
 }
 
+export const fetchHeroes = createAsyncThunk(
+    'heroes/fetchHeroes',         // type (имя экшена)
+    async () => {                 // payload creator - функция которая будет возвращать промис. у неё в совю очередь 1й аргумент то что передается в экшен при диспатче, а второй это АПИ самого tunkа (в доках, редко используются)
+        const {request} = useHttp();   
+        return await request("http://localhost:3001/heroes");  // здесь вернется промис, а данные которые из него получим пойдут в payload
+    }
+)   // возвращает нам 3 экшена: pending, fulfilled, rejected (в зависимости от того как отработает промис, как его состояния)
+    // внутри неё не работают мемоизированные функции (пришлось убрать useCallback из http.hook.js)
+
 const heroesSlice = createSlice({
     name: 'heroes',  // имя слайса (пространство имен создаваемых экшенов)
     initialState,
     reducers: {
-        // здесь так же можно писать мутабельные конструкции блмгодаря ImmerJS
-        heroesFetching: state => {state.heroesLoadingStatus = 'loading'},   // здесь heroesFetching - это формирование экшен-креатора, а остальное - действия которые подвязываются под него - т.е. функция-редюсер, которая будет изменять стэйт в зависимости от экшена
-        heroesFetched: (state, action) => {
-            state.heroes = action.payload;
-            state.heroesLoadingStatus = 'idle';
-        },
-        heroesFetchingError: state => {
-            state.heroesLoadingStatus = 'error';
-        },
+        // здесь так же можно писать мутабельные конструкции блaгодаря ImmerJS
         addHero: (state, action) => {
             state.heroes.push(action.payload);
         },
@@ -26,8 +27,18 @@ const heroesSlice = createSlice({
             state.heroes = state.heroes.filter(hero => hero.id !== action.payload);
         }
     }
-    // , extraReducers - объект содержащий редьюскры другого среза (может понадобиться в случае необходимости обновления объекта относящегося к дркгому срезу)
+    , extraReducers: (builder) => {
+        builder                                                                               // здесь происходит обработка экшенов которые возвращает createAsyncThunk
+            .addCase(fetchHeroes.pending, state => {state.heroesLoadingStatus = 'loading'})   // pending - когда промис в ожидании
+            .addCase(fetchHeroes.fulfilled, (state, action) => {                              // fulfilled - когда промис отработал успешно
+                state.heroes = action.payload;
+                state.heroesLoadingStatus = 'idle';
+            })
+            .addCase(fetchHeroes.rejected, state => {state.heroesLoadingStatus = 'error'})    // rejected - когда промис отработал с ошибкой
+            .addDefaultCase(() => {})
+        }
 
+    
 })    // когда эта функция отработает она вернет нам 3 сущности: имя, объект с экшенами и редьюсер 
 
 const {actions, reducer} = heroesSlice;   // деструктурируем actions и reducer из heroesSlice

@@ -3,8 +3,8 @@ import { useCallback, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 // import { createSelector } from 'reselect';
 
-import { fetchHeroes } from '../../actions';
-import { deleteHero } from './heroesSlice';
+// import { fetchHeroes } from '../../actions';
+import { deleteHero, fetchHeroes } from './heroesSlice';
 import HeroesListItem from "../heroesListItem/HeroesListItem";
 import Spinner from '../spinner/Spinner';
 
@@ -55,7 +55,8 @@ const HeroesList = () => {
     })        
 
     useEffect(() => {
-        dispatch(fetchHeroes(request));    // вызываем экшн креатор и передаем туда request
+        dispatch(fetchHeroes());             
+        // dispatch(fetchHeroes(request));    // вызываем экшн креатор и передаем туда request (было до RTK createAsyncThunk)
 
         // все эти действия теперь происходят в экшен креаторе
         // dispatch(heroesFetching());           // устанавливаем состояние загрузки

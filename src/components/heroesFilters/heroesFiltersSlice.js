@@ -1,11 +1,12 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+
 // import { filtersFetching } from '../../actions';
 
 const initialState = { 
     filters: [],
     filtersLoadingStatus: 'idle',   // бездействие, ожидание действия 
     activeFilter: 'all'
-}
+} 
 
 const filtersSlice = createSlice({
     name: 'filters',  // имя слайса (пространство имен создаваемых экшенов)

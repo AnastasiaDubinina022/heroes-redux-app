@@ -1,14 +1,14 @@
 // import { createAction } from "@reduxjs/toolkit";
-import {heroesFetched, heroesFetchingError, heroesFetching} from "../components/heroesList/heroesSlice"; // импортируем экшены из heroesSlice
+// import {heroesFetched, heroesFetchingError, heroesFetching} from "../components/heroesList/heroesSlice"; // импортируем экшены из heroesSlice
 import {filtersFetched, filtersFetchingError, filtersFetching} from "../components/heroesFilters/heroesFiltersSlice"; // импортируем экшены из heroesFiltersSlice
 
-export const fetchHeroes = (request) => (dispatch) => {   // создаем универсальный экшн креатор который будет получать данные и обрабатывать возможные состояния
-                                                          // request передаем из компгонента, dispatch передается автоматически из redux-thunk
-    dispatch(heroesFetching());                
-    request("http://localhost:3001/heroes")  // на 3001 порту запускается localhost и делаем запрос к героям
-        .then(data => dispatch(heroesFetched(data)))  // диспэтчим новое действие на статус получено и передаем туда полученные данные
-        .catch(() => dispatch(heroesFetchingError())) // если ошибка меняем статус на ошибку
-}
+// export const fetchHeroes = (request) => (dispatch) => {   // создаем универсальный экшн креатор который будет получать данные и обрабатывать возможные состояния
+//                                                           // request передаем из компгонента, dispatch передается автоматически из redux-thunk
+//     dispatch(heroesFetching());                
+//     request("http://localhost:3001/heroes")  // на 3001 порту запускается localhost и делаем запрос к героям
+//         .then(data => dispatch(heroesFetched(data)))  // диспэтчим новое действие на статус получено и передаем туда полученные данные
+//         .catch(() => dispatch(heroesFetchingError())) // если ошибка меняем статус на ошибку
+// }
 
 export const fetchFilters = (request) => (dispatch) => {   // универсчальный экшн креатор для получения данных фильтров (с помощью thunk)
     dispatch(filtersFetching());
