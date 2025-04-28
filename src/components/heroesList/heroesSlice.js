@@ -32,7 +32,7 @@ const heroesSlice = createSlice({
 
 const {actions, reducer} = heroesSlice;   // деструктурируем actions и reducer из heroesSlice
 
-export default reducer;   // экспортируем редюсер (поместим его в создане стора)
+export default reducer;   // экспортируем редюсер (поместим его в создание стора)
 export const {
     heroesFetching, 
     heroesFetched, 

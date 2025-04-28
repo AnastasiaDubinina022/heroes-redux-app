@@ -2,8 +2,9 @@
 // import {thunk} from 'redux-thunk';
 import { configureStore } from '@reduxjs/toolkit'; 
 // import heroes from '../reducers/heroes';
+// import filters from '../reducers/filters';
 import heroes from '../components/heroesList/heroesSlice';  // импортируем редьюсер из heroesSlice
-import filters from '../reducers/filters';
+import filters from '../components/heroesFilters/heroesFiltersSlice';  // импортируем редьюсер из heroesFiltersSlice
 
 const stringMiddleware = () => (next) => (action) => {   // создаем функцию middleware которая авт. принимает в себя store, возвращает ф-ю авт. подхватывающую dispatch (next) и возвращает конечную ф-ю авт. принимающую в себя action - это по сути и есть наш новый функционал dispatch
                       // () === (store) === ({dispatch, getState}) - содержит в себе не весь стор, а только эти 2 сущности. getState для того, если нужно будет получить кусочек стэйта и что-то с нми сделать

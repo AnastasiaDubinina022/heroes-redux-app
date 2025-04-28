@@ -1,5 +1,6 @@
 // import { createAction } from "@reduxjs/toolkit";
 import {heroesFetched, heroesFetchingError, heroesFetching} from "../components/heroesList/heroesSlice"; // импортируем экшены из heroesSlice
+import {filtersFetched, filtersFetchingError, filtersFetching} from "../components/heroesFilters/heroesFiltersSlice"; // импортируем экшены из heroesFiltersSlice
 
 export const fetchHeroes = (request) => (dispatch) => {   // создаем универсальный экшн креатор который будет получать данные и обрабатывать возможные состояния
                                                           // request передаем из компгонента, dispatch передается автоматически из redux-thunk
@@ -16,31 +17,31 @@ export const fetchFilters = (request) => (dispatch) => {   // универсча
     .catch(() => dispatch(filtersFetchingError()))
 }
 
-export const filtersFetching = () => {
-    return {
-        type: 'FILTERS_FETCHING'
-    }
-}
+// export const filtersFetching = () => {
+//     return {
+//         type: 'FILTERS_FETCHING'
+//     }
+// }
 
-export const filtersFetched = (filters) => {
-    return {
-        type: 'FILTERS_FETCHED',
-        payload: filters
-    }
-}
+// export const filtersFetched = (filters) => {
+//     return {
+//         type: 'FILTERS_FETCHED',
+//         payload: filters
+//     }
+// }
 
-export const filtersFetchingError = () => {
-    return {
-        type: 'FILTERS_FETCHING_ERROR'
-    }
-}
+// export const filtersFetchingError = () => {
+//     return {
+//         type: 'FILTERS_FETCHING_ERROR'
+//     }
+// }
 
-export const setActiveFilter = (activeFilter) => {   
-    return {
-        type: 'SET_ACTIVE_FILTER',
-        payload: activeFilter
-    }
-}
+// export const setActiveFilter = (activeFilter) => {   
+//     return {
+//         type: 'SET_ACTIVE_FILTER',
+//         payload: activeFilter
+//     }
+// }
 
 // пример создания обычного экшен-креатора (без использования createAction из redux-toolkit)
 // export const heroesFetching = () => {
@@ -48,7 +49,7 @@ export const setActiveFilter = (activeFilter) => {
 //         type: 'HEROES_FETCHING'
 //     }
 // }
-// export const heroesFetching = createAction('HEROES_FETCHING'); // эквивалентно вышеуказанному коду, но более лаконично
+// export const heroesFetching = createAction('HEROES_FETCHING'); // эквивалентно вышеуказанному коду, но более лаконично, в этом способе payload не надо указывать, т.к. он будет автоматически создан в экшене
 
 
 // пример эфемерной задачи срабатывания фильтров с задержкой
