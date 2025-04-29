@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 // import { createSelector } from 'reselect';
 
 // import { fetchHeroes } from '../../actions';
-import { deleteHero, fetchHeroes } from './heroesSlice';
+import { deleteHero, fetchHeroes, filteredHeroesSelector } from './heroesSlice';
 import HeroesListItem from "../heroesListItem/HeroesListItem";
 import Spinner from '../spinner/Spinner';
 
@@ -39,20 +39,20 @@ const HeroesList = () => {
     // )
     // const filteredHeroes = useSelector(filteredHeroesSelector);  
 
-    const heroes = useSelector(state => state.heroes.heroes);        
-    const activeFilter = useSelector(state => state.filters.activeFilter)
+    const filteredHeroes = useSelector(filteredHeroesSelector);  // получаем отфильтрованный массив героев из стора (через селектор адаптера)
+    // const heroes = useSelector(selectAll);   // получаем массив c объектами героев из стора (через селектор)      
+    // const activeFilter = useSelector(state => state.filters.activeFilter)
     const heroesLoadingStatus = useSelector(state => state.heroes.heroesLoadingStatus);
     const dispatch = useDispatch();
     const {request} = useHttp();
 
-    const filteredHeroes = heroes.filter((hero) => {     
-
-        if (activeFilter === 'all') {
-            return heroes;
-        }
-
-        return hero.element === activeFilter;
-    })        
+    // был вариант с фильтрацией в самом компоненте 
+    // const filteredHeroes = heroes.filter((hero) => {     
+    //     if (activeFilter === 'all') {
+    //         return heroes;
+    //     }
+    //     return hero.element === activeFilter;
+    // })        
 
     useEffect(() => {
         dispatch(fetchHeroes());             

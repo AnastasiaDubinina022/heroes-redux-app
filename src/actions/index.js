@@ -10,7 +10,7 @@ import {filtersFetched, filtersFetchingError, filtersFetching} from "../componen
 //         .catch(() => dispatch(heroesFetchingError())) // если ошибка меняем статус на ошибку
 // }
 
-export const fetchFilters = (request) => (dispatch) => {   // универсчальный экшн креатор для получения данных фильтров (с помощью thunk)
+export const fetchFilters = (request) => (dispatch) => {   // универсчальный экшн креатор для получения данных фильтров (с помощью redux thunk)
     dispatch(filtersFetching());
     request("http://localhost:3001/filters")
     .then(data => dispatch(filtersFetched(data)))
