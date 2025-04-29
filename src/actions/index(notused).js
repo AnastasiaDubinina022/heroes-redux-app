@@ -1,6 +1,8 @@
 // import { createAction } from "@reduxjs/toolkit";
 // import {heroesFetched, heroesFetchingError, heroesFetching} from "../components/heroesList/heroesSlice"; // импортируем экшены из heroesSlice
-import {filtersFetched, filtersFetchingError, filtersFetching} from "../components/heroesFilters/heroesFiltersSlice"; // импортируем экшены из heroesFiltersSlice
+// import {filtersFetched, filtersFetchingError, filtersFetching} from "../components/heroesFilters/heroesFiltersSlice"; // импортируем экшены из heroesFiltersSlice
+
+// теперь запросы делаются в слайсах, а не в actions, т.к. там используется createAsyncThunk и он сам создает экшены для обработки состояний (pending, fulfilled, rejected)
 
 // export const fetchHeroes = (request) => (dispatch) => {   // создаем универсальный экшн креатор который будет получать данные и обрабатывать возможные состояния
 //                                                           // request передаем из компгонента, dispatch передается автоматически из redux-thunk
@@ -10,12 +12,12 @@ import {filtersFetched, filtersFetchingError, filtersFetching} from "../componen
 //         .catch(() => dispatch(heroesFetchingError())) // если ошибка меняем статус на ошибку
 // }
 
-export const fetchFilters = (request) => (dispatch) => {   // универсчальный экшн креатор для получения данных фильтров (с помощью redux thunk)
-    dispatch(filtersFetching());
-    request("http://localhost:3001/filters")
-    .then(data => dispatch(filtersFetched(data)))
-    .catch(() => dispatch(filtersFetchingError()))
-}
+// export const fetchFilters = (request) => (dispatch) => {   // универсчальный экшн креатор для получения данных фильтров (с помощью redux thunk)
+//     dispatch(filtersFetching());
+//     request("http://localhost:3001/filters")
+//     .then(data => dispatch(filtersFetched(data)))
+//     .catch(() => dispatch(filtersFetchingError()))
+// }
 
 // export const filtersFetching = () => {
 //     return {

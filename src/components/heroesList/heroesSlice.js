@@ -37,8 +37,8 @@ const heroesSlice = createSlice({
             // state.heroes = state.heroes.filter(hero => hero.id !== action.payload);
             heroesAdapter.removeOne(state, action.payload)  // удаляем 1 сущность (героя) из массива героев, айди героя приходит автоматически в action.payload
         }
-    }
-    , extraReducers: (builder) => {
+    }, 
+    extraReducers: (builder) => {
         builder                                                                               // здесь происходит обработка экшенов которые возвращает createAsyncThunk
             .addCase(fetchHeroes.pending, state => {state.heroesLoadingStatus = 'loading'})   // pending - когда промис в ожидании
             .addCase(fetchHeroes.fulfilled, (state, action) => {                              // fulfilled - когда промис отработал успешно
@@ -64,7 +64,7 @@ const {selectAll} = heroesAdapter.getSelectors(state => state.heroes);   // по
 export const filteredHeroesSelector = createSelector(     
     (state) => state.filters.activeFilter,    // мем. значение 1     
     // (state) => state.heroes.heroes,           // мем. значение 2 и т.д.
-    selectAll,                                   // мем. значение 2 и т.д. - теперь используем селектор из адаптера
+    selectAll,                                   // мем. значение 2 и т.д. - теперь используем селектор из адаптера и стейт с него придет автоматически потому что createSeector его получает автоматически
     (filter, heroes) => {                     // (значение 1, значение 2) => {то-то с ними сделать и получить общее мем. значение - filteredHeroesSelector}
         if (filter === 'all') {  
             console.log('render')                  

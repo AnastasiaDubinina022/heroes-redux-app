@@ -1,8 +1,7 @@
 import {useEffect} from 'react' 
 import { useSelector, useDispatch } from "react-redux";
-import {useHttp} from '../../hooks/http.hook';
-import {fetchFilters} from '../../actions/index';
-import {setActiveFilter} from './heroesFiltersSlice';  
+import {fetchFilters, setActiveFilter, selectAll} from '../../components/heroesFilters/heroesFiltersSlice'; 
+import store from '../../store';  
 
 import Spinner from '../spinner/Spinner';
 
@@ -14,15 +13,18 @@ import Spinner from '../spinner/Spinner';
 // Представьте, что вы попросили бэкенд-разработчика об этом. не забывать перезапускать сервер после изменения json-файла
 
 const HeroesFilters = () => {
+    const filters = selectAll(store.getState());  // получаем массив c объектами фильтров из глобального стора (через селектор адаптера selectAll получаем именно фильтры)
+    // делать это в самом слайсе нельзя, т.к. стор создается в слайсе, и мы не можем вызвать стор до того как он был создан
+    
     const filtersLoadingStatus = useSelector(state => state.filters.filtersLoadingStatus);
-    const filters = useSelector(state => state.filters.filters);
+    // const filters = useSelector(state => state.filters.filters);
     const activeFilter = useSelector(state => state.filters.activeFilter);
     const dispatch = useDispatch();
-    const {request} = useHttp();
 
     useEffect(() => {
-        dispatch(fetchFilters(request));    // вызываем экшн креатор и передаем туда request
+        dispatch(fetchFilters());
 
+        // dispatch(fetchFilters(request));    // вызываем экшн креатор и передаем туда request
         // все эти действия теперь происходят в экшен креаторе
         // dispatch(filtersFetching())     
         // request("http://localhost:3001/filters")

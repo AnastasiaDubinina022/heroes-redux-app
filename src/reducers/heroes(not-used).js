@@ -6,7 +6,7 @@ import {
     heroesFetchingError,
     deleteHero,
     addHero
-} from '../actions/index.js';
+} from '../actions/index(notused).js';
 
 const initialState = {
     heroes: [],
